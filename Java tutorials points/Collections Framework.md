@@ -89,7 +89,7 @@ public interface Set<E> extends Collections<E>{
 ```
 
 ## SortedSet Interface
-> A set that further provides a total orderinng onn its elements
+> A set that further provides a total ordering on its elements
 
 * The elements are ordered using their natural ordering, or by a comparator provided at set creation time.
 * All elements inserted into a sorted set must implement the `Comparable` interface
@@ -120,7 +120,7 @@ public interface SortedSet<E> extends Set<E>{
 
 ---
 # Map Interface
-> Element that maps keys to values.
+> An object that maps keys to values.
 
 * A map cannot contain duplicate keys, each key can map to at most one value.
 * It is not permissible for a map to contain itself as a key. While it is permissible for a map to contain itself as a value 
@@ -392,7 +392,7 @@ implements Map<K,V>
 ### IdentityHashMap
 > This class implements AbstractMap. It is similar to HashMap except that it uses reference equality when comparing the elements.
 
-** Equal if and only if (k1==k2)
+* Equal if and only if (k1==k2)
 **This class is not a general-purpose Map implementation! While this class implements the Map interface, it intentionally violates Map's general contract, which mandates the use of the equals method when comparing objects. This class is designed for use only in the rare cases wherein reference-equality semantics are required.**
 
 ```
@@ -401,6 +401,7 @@ extends AbstractMap<K,V>
 implements Map<K,V>, Serializable, Cloneable
 ```
 ---
+
 # The Collection Algorithms
 
 * These algorithms are defined as static methods within the Collections class.
@@ -422,7 +423,6 @@ static void shuffle(List list, Random r);
 
 static void rotate(List list, int n);
 ```
-
 
 ## Sorting
 ```
@@ -511,6 +511,7 @@ extends Iterator<E>{
 }
 ```
 ---
+
 # Comparator
 > comparator that defines precisely what sorted order means.
 #### Usage
@@ -519,14 +520,14 @@ extends Iterator<E>{
 @FunctionalInterface
 public interface Comparator<T>{
     int compare(Object obj1, Object obj2)// It returns a positive value if obj1 is greater than obj2. 
-    Comparator comparinf(fuction keyExtractor, comparator keycomparator)//accepts a sort key Function and returns a Comparator
+    Comparator comparing(fuction keyExtractor, comparator keycomparator)//accepts a sort key Function and returns a Comparator
     boolean equals(Object obj)
 }
 ```
 ## Comparable 
 
 * Comparable is an interface which defines a way to compare an object with other objects of the same type.This is called the class's “natural ordering”.
-* the class's compareTo method is referred to as its natural comparison method.
+* the class's `compareTo` method is referred to as its natural comparison method.
 
 ```
 public interface Comparable<T>{
