@@ -146,4 +146,61 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E>
 ---
 ## Tree Traversal Algorithms
 
-**Preorder and Postorder Traversals of General Trees
+### Preorder Traversals of General Trees
+In a predorder traversal of a tree, The root o T is visted first and the left subtrees are traversed recursively
+```
+public void preorder(p):
+   visited(p)
+   preorder(p.left)
+   preorder(p.right)
+```
+### Postorder Traversals of General Trees
+* This algorithm can be viewed as the opposite of the preorder traversal
+* It recursively traverses the subtrees rooted at the children of the root first, and then visits the root 
+```
+Algorithm void PostOrder(p):
+    PostOrder(p.left);
+    PostOrder(p.right);
+    visited(p);
+```
+### Inorder Traversals of a Binary Trees
+> left,root,right
+* The inorder traversal of a binary tree T can be informally viewed as visiting the nodes of T “from left to right.”
+* the inorder traversal visits p after all the positions in the left subtree of p and before all the positions in the right subtree of p.
+```
+Algorithm Inorder(p):
+    Inorder(p.left);
+    visited(p);
+    Inorder(p.right)
+```
+
+### Breadth-First Tree Traversal
+* The process is not recursive, since we are not traversing entire subtrees at once.
+* Use a queue to produce a FIFO (i.e., first-in first-out) semantics for the order in which we visit nodes
+* Traversal layer by layer
+```
+Algorithm BFS(root):
+    Queue.add(root);
+    while Queue:
+        p = Queue.dequeue();
+        p.visited();
+	for child in p.children()
+	     q.enqueue(child);
+```
+
+### Applications of Tree Traversals
+* Table of Contents
+```
+public static<E> void printPreorderLabeled(Tree<E>,Position<E> p, Arraylist<Integer> path){
+     int d = path.size();
+     System.out.println(spaces(2*d));
+     for(int i;i<d;i++){ System.out.println(path.get(j)+(j==d-1? " ": "."))};
+     System.out.println(p.getElement());
+     path.add(1);
+     for(Position<E> c:T.child(p)){
+        printPreorderLabeled(T,c,path);
+	path.set(d,1+path.get(d))
+     }
+     path.remove(d);
+  }
+```
