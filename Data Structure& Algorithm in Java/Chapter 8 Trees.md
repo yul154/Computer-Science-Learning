@@ -107,5 +107,41 @@ public abstract class AbstractBinaryTree<E> extends AbstractTree<E>
     	 return snapshot;
     	 }
 }
-
 ```
+
+### Properties of Binary Trees
+* Node `n`,
+  1. h+1≤n≤2h+1−1
+  2. 1≤nE ≤2h
+  3. h≤nI ≤2h−1
+  4. log(n+1)−1 ≤ h ≤ n−1
+
+* In a nonempty proper binary tree T , with nE external nodes and nI internal nodes, we have nE = nI + 1.
+
+---
+## Implementing Trees
+
+**1.Linked Structure for Binary Trees**
+<img width="321" alt="Screen Shot 2020-08-17 at 10 05 32 AM" src="https://user-images.githubusercontent.com/27160394/90411307-30085480-e071-11ea-8250-ba072af3efd8.png">
+
+|Update methods|Describtion|
+|--------------|-----------|
+|addRoot(e):|Creates a root for an empty tree, storing e as the element, and returns the position of that root; an error occurs if the tree is not empty.|
+|addLeft(p, e)|Creates a left child of position p, storing element e, and returns the position of the new node; an error occurs if p already has a left child|
+|addRight(p, e)|Creates a right child of position p, storing element e, and returns the position of the new node; an error occurs if p already has a right child.|
+|set(p, e)|Replaces the element stored at position p with element e, and returns the previously stored element.|
+|attach(p, T1, T2)| Attaches the internal structure of trees T1 and T2 as the respective left and right subtrees of leaf position p and resets T1 and T2 to empty trees; an error condition occurs if p is not a leaf.|
+|remove(p）|Removesthenodeatpositionp,replacingitwithitschild (if any), and returns the element that had been stored at p; an error occurs if p has two children.|
+
+
+* Performance of the Linked Binary Tree Implementation
+<img width="319" alt="Screen Shot 2020-08-17 at 11 15 23 AM" src="https://user-images.githubusercontent.com/27160394/90418605-f2a8c480-e07a-11ea-8998-ca8ded7c91fe.png">
+
+**2.Array-Based Representation of a Binary Tree**
+1. If pistherootofT,then f(p)=0.
+2. If p is the left child of position q, then f(p) = 2f(q)+1. 
+3. If p is the right child of position q, then f(p) = 2f(q)+2.
+4. The parent of p has index ⌊( f ( p) − 1)/2⌋
+
+---
+## Tree Traversal Algorithms
