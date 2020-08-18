@@ -259,3 +259,40 @@ protected void heapify() {
 <img width="301" alt="Screen Shot 2020-08-18 at 2 08 17 PM" src="https://user-images.githubusercontent.com/27160394/90554991-463f0f00-e15c-11ea-8266-abc49128a90e.png">
 ---
 # Sorting with a Priority Queue
+```
+public static<E> void pqSort(List<E> S, PriorityQueue<E,?> P){
+    int n =S.size();
+    for(int j=0;j<n;j++){
+       P.insert(S.remove(S.first()),null);
+    }
+    for(int i=0;i<n;i++){
+      S.addLast(P.removeMin().getKey());
+    }
+}
+```
+## Selection-Sort and Insertion-Sort
+
+* Selection-Sort: Select Minmum elemennt each time and put it in current location
+* Insert-Sort: the bottleneck in this sorting algorithm involves the repeated “insertion” of a new element at the appropriate position in a sorted list
+
+### Heap-Sort
+1.  the i th insert operation takes O(log i) time, since the heap has i entries after the operation is performed. Therefore, this phase takes O(n log n) time.
+2. the j th removeMin operation runs in O(log(n − j + 1)), since the heap has n − j + 1 entries at the time the operation is performed.
+3. o the entire priority-queue sorting algorithm runs in O(nlogn) time
+
+**Implementing Heap-Sort In-Place**
+- use the left portion of S, up to a certain index i − 1, to store the entries of the heap, and the right portion of S, from index i to n − 1, to store the elements of the sequence.
+
+<img width="373" alt="Screen Shot 2020-08-18 at 3 22 55 PM" src="https://user-images.githubusercontent.com/27160394/90561682-b2bf0b80-e166-11ea-8aa3-51ab7e416fc0.png">
+
+---
+# Adaptable Priority Queues
+1. Remove middle element
+2. Modify the key of an existing entry with a new key
+3. Replace the value of an existing entry with a new value.
+
+## Location-Aware Entries
+* To allow an entry instance to encode a location within a priority queue
+* adding a third field that designates the current index of an entry within the array-based representation of the heap,
+
+
