@@ -294,5 +294,59 @@ public static<E> void pqSort(List<E> S, PriorityQueue<E,?> P){
 ## Location-Aware Entries
 * To allow an entry instance to encode a location within a priority queue
 * adding a third field that designates the current index of an entry within the array-based representation of the heap,
+* When we perform priority queue operations on our heap,we must make sure to update the third field of each affected entry to reflect its new index within the array
 
+## Implementing an Adaptable Priority Queue
+* Redefine a nested AdaptablePQEntry class that extends the inherited PQEntry class, augmenting it with an additional index field
+* Overrides `swap` in order to update the stored indices of our location-aware entries when they are relocated
+* Provide a new bubble utility that determines whether an up- heap or down-heap bubbling step is warranted. 
+
+```
+protected void swap(int i, int j) {
+		super.swap(i, j);
+		((AdaptablePQEntry<K, V>)heap.get(i)).setIndex(i);
+		((AdaptablePQEntry<K, V>)heap.get(j)).setIndex(j);
+	}
+
+protected void bubble(int j) {
+	if(j>0&&compare(heap.get(j),heap.get(parent(j)))<0)
+		upheap(j);
+	else
+		downheap(j);
+}
+
+public Entry<K,V> insert(K key, V value) throws IllegalArgumentException{
+	checkKey(key);
+	Entry<K,V> newest = new AdaptablePQEntry<>(key, value, heap.size());
+	heap.add(newest);
+	upheap(heap.size()-1);
+	return newest;
+}
+public void remove(Entry<K, V> en ) throws IllegalArgumentException{
+		AdaptablePQEntry<K, V> locator = validate(en);
+		int j = locator.getIndex();
+		if(j==heap.size()-1)
+			heap.remove(heap.size()-1);
+		else {
+			swap(j,heap.size()-1);
+			heap.remove(heap.size()-1);
+			bubble(j);
+		}
+	}
+	
+public void replacekey(Entry<K, V> en, K key) {
+	AdaptablePQEntry<K, V> locator = validate(en);
+	checkKey(key);
+	locator.setKey(key);
+	bubble(locator.getIndex());
+}
+
+public void replaceValue(Entry<K, V> en, V value) throws IllegalArgumentException{
+	AdaptablePQEntry<K, V> locator = validate(en);
+	locator.setValue(value);
+}
+
+```
+
+<img width="303" alt="Screen Shot 2020-08-19 at 10 28 18 AM" src="https://user-images.githubusercontent.com/27160394/90655029-b3a77a00-e206-11ea-9aa8-dc1e43f862a0.png">
 
