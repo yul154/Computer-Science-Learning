@@ -1,3 +1,4 @@
+---
 # Binary Search Trees
 
 A Tree consists of
