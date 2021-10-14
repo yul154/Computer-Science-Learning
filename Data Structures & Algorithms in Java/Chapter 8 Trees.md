@@ -248,10 +248,29 @@ public E remove(Position<E> p) throws IllegalArgumentException {
      return temp
 }
 ```
-8.3.2 Array-Based Representation of a Binary Tree
+### 8.3.2 Array-Based Representation of a Binary Tree
 
 let `f(p)` be the integer defined as follows.
 • If `p` is the root of `T`,then `f(p)=0`.
 • If `p` is the left child of position `q`, then f(p) = 2f(q)+1. 
 • If `p` is the right child of position `q`, then f(p) = 2f(q)+2.
 
+One advantage of an array-based representation of a binary tree is that a posi- tion p can be represented by the single integer f(p),
+*  Based on our formula for the level numbering, the left child of p has index 2f(p)+1, 
+*  the right child of p has index 2f(p)+2, 
+*  the parent of p has index [(f(p) − 1)/2]
+
+On drawnback is the space usage of an array-based representation depends greatly on the shape of the tree.
+* In fact, in the worst case, the exponential worst-case space
+* have a number of empty cells that do not refer to existing positions of T
+
+Another drawback of an array representation is that many update operations for trees cannot be efficiently supported. 
+* For example, removing a node and promoting its child takes O(n) time 
+* because it is not just the child that moves locations within the array, but all descendants of that child.
+
+### 8.3.3 Linked Structure for General Trees
+ A general tree T as a linked structure is to have each node store a single container of references to its children.
+ 
+ <img width="534" alt="Screen Shot 2021-10-14 at 4 29 48 PM" src="https://user-images.githubusercontent.com/27160394/137280649-08cb53b1-9be5-4149-aee9-0a6ead7f3a13.png">
+---
+## 8.4 Tree Traversal Algorithms
