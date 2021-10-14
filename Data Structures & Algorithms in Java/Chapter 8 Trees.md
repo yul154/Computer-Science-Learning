@@ -67,3 +67,191 @@ private int heightBad(Position<E> e) {
 ```
 ---
 ## 8.2 Binary Trees
+### 8.2.1 The Binary Tree Abstract Data Type
+```
+public interface BinaryTree<E> extends Tree<E> {
+	
+	/**Returns the Position of p's left child (or null if no child exists). */
+	Position<E> left(Position<E> p) throws IllegalArgumentException;
+
+	/** Returns the Position of p's right child (or null if no child exists). */
+	Position<E> right(Position<E> p) throws IllegalArgumentException;
+
+	/** Returns the Position of p's sibling (or null if no sibling exists). */
+	Position<E> sibling(Position<E> p) throws IllegalArgumentException;
+ }
+```
+
+Defining an AbstractBinaryTree Base Class
+```
+public abstract class AbstractBinaryTree<E> extends  AbstractTree<E> {
+	
+	public Position<E> sibling(Position<E> p) {
+		Position<E> parent = parent<E>;
+		if(parent == None) return null;
+		if(p == left(parent)) {
+			return right(parent);
+		}else {
+			return left(parent);
+		}
+	}
+	
+	public int numChildren(Position<E> p) {
+		int count = 0;
+		if(left(p) != null) count+=1;
+		if(right(p)!= null) count+=1;
+		return count;
+	}
+	
+	/** Returns the Position of p's sibling (or null if no sibling exists). */
+	public Iterable<Position<E>> children(Position<E> p){
+		List<Position<E>> snapshot = new ArrayList<>();
+		if(left(p)!= null) snapshot.add(left(p));
+		if(right(p)!= null) snapshot.add(right(p));
+		return snapshot;
+		
+	}
+	
+}
+```
+### 8.2.2 Properties of Binary Trees
+![Screen Shot 2021-10-13 at 9 41 34 PM](https://user-images.githubusercontent.com/27160394/137144416-ed16eba1-715f-4da6-b9a0-8fa5f835c26e.png)
+
+![Screen Shot 2021-10-13 at 10 28 21 PM](https://user-images.githubusercontent.com/27160394/137153311-b4464e22-ebb2-422c-a4a2-01e3d59de823.png)
+
+---
+## 8.3 Implementing Trees
+*  How a tree will be represented internally
+*  How we can effectively navigate between parents and children.
+* 
+### 8.3.1 Linked Structure for Binary Trees
+![Screen Shot 2021-10-13 at 10 31 30 PM](https://user-images.githubusercontent.com/27160394/137154009-39f86166-7092-4cae-8e51-dc45ee055963.png)
+
+Operations for Updating a Linked Binary Tree
+|Operation names| Description|
+|---------------|------------|
+|`addRoot(e)`|Creates a root for an empty tree, storing e as the element, and returns the position of that root; an error occurs if the tree is not empty.|
+|`addLeft(p, e)`|Creates a left child of position p, storing element e, and returns the position of the new node; an error occurs if p already has a left child.|
+|`addRight(p, e):`|Creates a right child of position p, storing element e, and returns the position of the new node; an error occurs if p already has a right child.|
+|`set(p, e)`|Replaces the element stored at position p with element e, and returns the previously stored element|
+|`attach(p, T1, T2)`|Attaches the internal structure of trees T1 and T2 as the respective left and right subtrees of leaf position p and resets T1 and T2 to empty trees; an error condition occurs if p is not a leaf.|
+|`remove(p)`|Removes the node at position p,replacing it with its child (if any), and returns the element that had been stored at p; an error occurs if p has two children.|
+
+Java Implementation of a Linked Binary Tree Structure
+
+Node class
+```
+public class LinkedBinaryTree<E> extends AbstractBinaryTree {
+	
+	protected static  class Node<E> implements Position<E>{
+		private E element;
+		private Node<E> parent;
+		private Node<E> left;
+		private Node<E> right;
+		private Node(E e, Node<E> above, Node<E> leftChild, Node<E> rightChild) {
+			element = e;
+			left = leftChild;
+			right = rightChild;
+			parent = above;
+		}
+		public E getElement() { return element; }
+		public Node<E> getParent() { return parent; }
+		public Node<E> getLeft() { return left; }
+		public Node<E> getRight() { return right; }
+		// update methods
+		public void setElement(E e) { element = e; }
+		public void setParent(Node<E> parentNode) { parent = parentNode; } public void setLeft(Node<E> leftChild) { left = leftChild; }
+		public void setRight(Node<E> rightChild) { right = rightChild; }
+	}
+	
+	protected Node<E> createNode(E e, Node<E> parent,Node<E> left, Node<E> right)  //factory method pattern,
+	{ return new Node<E>(e, parent, left, right);}
+	
+	protected Node<E> root = null; 
+	private int size = 0;
+	public LinkedBinaryTree() { }
+```
+* The Factory Method defines an interface for creating objects, but lets subclasses decide which classes to instantiate
+
+```
+// nonpublic utility
+/** Validates the position and returns it as a node. */
+protected Node<E> validate(Position<E> p) throws IllegalArgumentException {
+	if(!(p instanceof Node)) throw new IllegalArgumentException("Not valid position type");
+	Node<E> node = (Node<E>) p;
+	if(node.getParent() == node) {
+		throw new IllegalArgumentException("p is no longer in the tree");
+	}
+	return node;
+}
+// accessor methods (not already implemented in AbstractBinaryTree)
+/** Returns the number of nodes in the tree. */
+public int size( ) {return size; }
+/** Returns the root Position of the tree (or null if tree is empty). */ 
+public Position<E> root( ) {return root; }
+/** Returns the Position of p's parent (or null if p is root). */
+public Position<E> parent(Position<E> p) throws IllegalArgumentException {Node<E> node = validate(p); return node.getParent(); }
+/** Returns the Position of p's left child (or null if no child exists). */
+public Position<E> left(Position<E> p) throws IllegalArgumentException { Node<E> node = validate(p); return node.getLeft(); }
+/** Returns the Position of p's right child (or null if no child exists). */
+public Position<E> right(Position<E> p) throws IllegalArgumentException { Node<E> node = validate(p);return node.getRight(); }
+
+```
+
+Six update methods for a linked binary tree.
+```
+public Position<E> addLeft(Position<E> p, E e)
+{
+    	 throws IllegalArgumentException { Node<E> parent = validate(p);
+	     if (parent.getLeft() != null)  throw new IllegalArgumentException("p already has a left child");
+	     Node<E> child = createNode(e, parent, null, null); 
+	     parent.setLeft(child);
+	     size++;
+	     return child;
+ }
+ public void attach(Position<E> p, LinkedBinaryTree<E> t1, LinkedBinaryTree<E> t2) throws IllegalArgumentException {
+	 Node<E> node = validate(p);
+	 if (isInternal(p)) throw new IllegalArgumentException("p must be a leaf");
+	 size = t1.size+t2.size;
+	 if(!t1.isEmpty()) {
+		 t1.root.setParent(node); 
+		 node.setLeft(t1.root); 
+		 t1.root = null;
+		 t1.size = 0;
+	 }
+	 if(!t2.isEmpty()) {
+		 t2.root.setParent(node);
+		 node.setRight(t2);
+		 t2.root == null;
+		 t2.size = 0;
+	 }
+}
+public E remove(Position<E> p) throws IllegalArgumentException {
+     Node<E> node = validate(p);
+     if(numChildren(p)==2) throw new IllegalArgumentException("p has two children");
+     Node<E> child = node.getLeft()!=null?node.getLeft():node.getRight();
+     if(child!=null)
+	 child.setParent(node.getParent());
+     if(node ==root) {
+	 root =child;
+     }else {
+	 Node<E> parent = node.getParent();
+	 if (node == parent.getLeft()) parent.setLeft(child);
+	 else parent.setRight(child);
+	 }
+     size --;
+     E temp =node.getElement();
+     node.setElement(null);
+     node.setLeft(null);
+     node.setRight(null);
+     node.setParent(node);
+     return temp
+}
+```
+8.3.2 Array-Based Representation of a Binary Tree
+
+let `f(p)` be the integer defined as follows.
+• If `p` is the root of `T`,then `f(p)=0`.
+• If `p` is the left child of position `q`, then f(p) = 2f(q)+1. 
+• If `p` is the right child of position `q`, then f(p) = 2f(q)+2.
+
