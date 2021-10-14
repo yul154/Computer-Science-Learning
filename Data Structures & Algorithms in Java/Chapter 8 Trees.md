@@ -272,5 +272,57 @@ Another drawback of an array representation is that many update operations for t
  A general tree T as a linked structure is to have each node store a single container of references to its children.
  
  <img width="534" alt="Screen Shot 2021-10-14 at 4 29 48 PM" src="https://user-images.githubusercontent.com/27160394/137280649-08cb53b1-9be5-4149-aee9-0a6ead7f3a13.png">
+ 
 ---
+
 ## 8.4 Tree Traversal Algorithms
+### 8.4.1 Preorder and Postorder Traversals of General Trees
+In a preorder traversal of a tree T 
+* the root of T is visited first and then the subtrees rooted at its children are traversed recursively.
+```
+Algorithm preorder(p): 
+  p.visited();
+  for (child : p.children()):
+  	preorder(r);
+````
+<img width="360" alt="Screen Shot 2021-10-14 at 5 35 51 PM" src="https://user-images.githubusercontent.com/27160394/137291814-64f1db9d-7575-45f7-b79d-0fbeb49f3e06.png">
+
+**Postorder traversal.**
+* It recursively traverses the subtrees rooted at the children of the root first
+
+```
+Algorithm postorder(p):
+  for (child : p.children()):
+  	postorder(r);
+  p.visited();
+```
+<img width="360" alt="Screen Shot 2021-10-14 at 5 38 16 PM" src="https://user-images.githubusercontent.com/27160394/137292229-facc65d5-1d1a-4968-8717-d241083e47ef.png">
+
+### 8.4.2 Breadth-First Tree Traversal
+> Visit all the positions at depth d before we visit the positions at depth d + 1.
+Use a queue to produce a FIFO (i.e., first-in first-out) semantics to store one level node.
+```
+Algorithm breadthfirst(root):
+  Deque<Node> bFS = new LinkedList<>();
+  bst.add(root)
+  while (!bfs.isEmpty())
+       current Node = bst.poll();
+       Node.visited();
+       for child : Node.children();
+       	   bfs.add(Child);
+       
+```
+### 8.4.3 Inorder Traversal of a Binary Tree
+> visiting the nodes of T “from left to right.” 
+The inorder traversal visits p after all the positions in the left subtree of p and before all the positions in the right subtree of p.
+```
+Algorithm inOrder(root):
+     if(root.left):
+     	inOrder(root.left);
+     root.visited();
+     if(root.right):
+     	inOrder(root.right);
+```
+<img width="432" alt="Screen Shot 2021-10-14 at 5 53 38 PM" src="https://user-images.githubusercontent.com/27160394/137294860-0daba226-220b-44c6-a322-5018200850dc.png">
+
+### 8.4.5 Applications of Tree Traversals
